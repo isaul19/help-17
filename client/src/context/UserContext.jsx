@@ -5,7 +5,7 @@ import react, { createContext, useState, useContext } from "react";
 const UserContext = createContext();
 const initialState = {login:false, token:'', name: ''};
 
-export const UserProvider = (props) => {
+export const UserProvider = ({children}) => {
     const [user, setUser] = useState(initialState);
 
     const loginUser = async(dataUser) => {
@@ -14,25 +14,19 @@ export const UserProvider = (props) => {
             );
             console.log(resp);
         } catch (error) {
-            
+            console.log("error en la peticion al backend");
         }
     }
 
     const value = {
         loginUser,
     }
-    return <UserContext.Provider value={value} {...props}/>
-    // return (
-    //     <UserContext.Provider 
-    //         value={
-    //             value
-    //         } 
-    //         >
-    //         {props}
-    //         </UserContext.Provider>
-    //     )
-    // }
-    
+
+    return (
+      <UserContext.Provider value={value}>
+        {children}
+      </UserContext.Provider>
+    )
 }
 
 export function useUser() {
